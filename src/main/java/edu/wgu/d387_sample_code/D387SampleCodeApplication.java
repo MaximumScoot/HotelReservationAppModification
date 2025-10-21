@@ -22,9 +22,20 @@ public class D387SampleCodeApplication {
         englishThread.start();
 
         //creating french welcome message thread
-        DisplayWelcomeMessage frenchWelcome = new DisplayWelcomeMessage(Locale.FRENCH);
+        DisplayWelcomeMessage frenchWelcome = new DisplayWelcomeMessage(Locale.CANADA_FRENCH);
         Thread frenchThread = new Thread(frenchWelcome);
         frenchThread.start();
+
+
+        //waits for threads to finish before moving on
+        try {
+            englishThread.join();
+            frenchThread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
 
         //storing english thread results for controller access
         Map<String, String> engMap = new HashMap<String,String>();
@@ -33,9 +44,11 @@ public class D387SampleCodeApplication {
         welcomeMessageList.add(engMap);
         //storing french thread results for controller access
         Map<String, String> freMap = new HashMap<String,String>();
-        engMap.put("lang", frenchWelcome.getLanguage());
-        engMap.put("message", frenchWelcome.getWelcomeMessage());
+        freMap.put("lang", frenchWelcome.getLanguage());
+        freMap.put("message", frenchWelcome.getWelcomeMessage());
         welcomeMessageList.add(freMap);
+
+        //System.out.println(D387SampleCodeApplication.welcomeMessageList);
 
 	}
 

@@ -19,14 +19,25 @@ export class AppComponent implements OnInit{
 
   private baseURL:string='http://localhost:8080';
 
+  //creating URL for welcome messages
+  private welcomeURL:string = this.baseURL + '/api/welcome';
   private getUrl:string = this.baseURL + '/room/reservation/v1/';
   private postUrl:string = this.baseURL + '/room/reservation/v1';
   public submitted!:boolean;
+
+
   roomsearch! : FormGroup;
   rooms! : Room[];
   request!:ReserveRoomRequest;
   currentCheckInVal!:string;
   currentCheckOutVal!:string;
+  //initalizing array of string for after API call
+  welcomeMessages!:string[];
+
+  //defining observable to fetch key-value from backend
+  getWelcomeMessages(): Observable<{ [key:string]: string }> {
+    return this.httpClient.get<{ [key:string]: string }>(this.welcomeURL);
+  }
 
     ngOnInit(){
       this.roomsearch= new FormGroup({
@@ -44,7 +55,17 @@ export class AppComponent implements OnInit{
       this.currentCheckInVal = x.checkin;
       this.currentCheckOutVal = x.checkout;
     });
+
+    //activating previous made observable and subscribing to stream and storing in welcomeMessages
+    this.getWelcomeMessages().subscribe(
+      (response) => {
+        this.welcomeMessages = Object.values(response);
+      }
+    )
+
   }
+
+
 
     onSubmit({value,valid}:{value:Roomsearch,valid:boolean}){
       this.getAll().subscribe(
