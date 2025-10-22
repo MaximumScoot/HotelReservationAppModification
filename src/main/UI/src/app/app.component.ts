@@ -20,7 +20,9 @@ export class AppComponent implements OnInit{
   private baseURL:string='http://localhost:8080';
 
   //creating URL for welcome messages
+  //creating URL for time zones
   private welcomeURL:string = this.baseURL + '/api/welcome';
+  private timeZoneURL:string = this.baseURL + '/api/time'
   private getUrl:string = this.baseURL + '/room/reservation/v1/';
   private postUrl:string = this.baseURL + '/room/reservation/v1';
   public submitted!:boolean;
@@ -31,12 +33,21 @@ export class AppComponent implements OnInit{
   request!:ReserveRoomRequest;
   currentCheckInVal!:string;
   currentCheckOutVal!:string;
-  //initalizing array of string for after API call
+  //initalizing arrays of strings for after API calls, went back and instead initialized Date objects for simplicity
   welcomeMessages!:string[];
+  timeZones!:{ [key: string]: string };
+  eastern!:Date;
+  mountain!:Date;
+  utc!:Date;
+  today: Date = new Date();
 
-  //defining observable to fetch key-value from backend
+  //defining observables to fetch key-value from backend
   getWelcomeMessages(): Observable<{ [key:string]: string }> {
     return this.httpClient.get<{ [key:string]: string }>(this.welcomeURL);
+  }
+
+  getTimeZones(): Observable<{ [key:string]: string}> {
+    return this.httpClient.get<{ [key:string]: string}>(this.timeZoneURL);
   }
 
     ngOnInit(){
@@ -56,10 +67,18 @@ export class AppComponent implements OnInit{
       this.currentCheckOutVal = x.checkout;
     });
 
-    //activating previous made observable and subscribing to stream and storing in welcomeMessages
+    //activating previous made observables and subscribing to stream and storing in welcomeMessages and timeZones
     this.getWelcomeMessages().subscribe(
       (response) => {
         this.welcomeMessages = Object.values(response);
+      }
+    )
+
+    this.getTimeZones().subscribe(
+      (response) => {
+        this.eastern = new Date(response["Eastern Time"]);
+        this.mountain = new Date(response["Mountain Time"]);
+        this.utc = new Date(response["UTC Time"] + "Z");
       }
     )
 

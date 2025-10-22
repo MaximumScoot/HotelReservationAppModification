@@ -26,6 +26,17 @@
     <article class="content">
 
 
+      <!--Displaying live presentation info on webpage -->
+      <div class="mb-5">
+        <h3 class="mb-2 date">Join us for an online presentation held at the Landon Hotel on: <br/>
+          {{today | date: 'fullDate'}} at:
+          <br/>
+          <span class="time">ET: {{ eastern | date:'shortTime':'America/New_York' }} </span>
+          <span class="time">MT: {{ mountain | date:'shortTime':'America/Denver' }} </span>
+          <span class="time">UTC: {{ eastern | date:'shortTime':'UTC'}} </span>
+        </h3>
+      </div>
+
 
       <div class="row">
         <div class=""col-12>

@@ -1,9 +1,13 @@
 package edu.wgu.d387_sample_code;
 
 import edu.wgu.d387_sample_code.i18n.DisplayWelcomeMessage;
+import edu.wgu.d387_sample_code.i18n.TimeConversion;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @SpringBootApplication
@@ -48,7 +52,10 @@ public class D387SampleCodeApplication {
         freMap.put("message", frenchWelcome.getWelcomeMessage());
         welcomeMessageList.add(freMap);
 
+        //TimeConversion.getTimeConversion();
+
         //System.out.println(D387SampleCodeApplication.welcomeMessageList);
+
 
 	}
 
